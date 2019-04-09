@@ -161,9 +161,7 @@ public class OldExtHash {
 					insert(tempKey, tempAddr);
 				}
 				insert(key, addr);				
-			}else{//double directory				
-				
-				
+			}else{//double directory			
 				long length = directory.length() - 4;
 				long halflength = (directory.length() - 4)/2 + 4;
 				long[] emptyAddr = new long[bucketSize];

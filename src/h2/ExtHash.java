@@ -64,10 +64,6 @@ public class ExtHash {
 			this.rowAddrs = rowAddrs;
 		}
 
-		public void writeBucket() {
-
-		}
-
 	}
 
 	public ExtHash(String filename, int bsize) throws IOException {
@@ -105,19 +101,18 @@ public class ExtHash {
 		directory.seek(0);
 		buckets.writeInt(this.bucketSize);
 		directory.writeInt(this.directoryBIts);
-
+		// initial dir
+		firstBucketAddr = buckets.getFilePointer();
+		secondBucketAddr = 4 + 4 + 4 + 4 * bsize + 8 * bsize;
+		directory.writeLong(firstBucketAddr);
+		directory.writeLong(secondBucketAddr);
+		// initial bucket
 		bucket.setBucketBits(1);
 		bucket.setCount(0);
 		bucket.setKeys(keysInDB);
 		bucket.setRowAddrs(tableAddrs);
-
-		firstBucketAddr = buckets.getFilePointer();
-		// writeBucket(buckets, firstBucketAddr, bucket);
-		// secondBucketAddr = buckets.getFilePointer();
-		// writeBucket(buckets, secondBucketAddr, bucket);
-		secondBucketAddr = 4 + 4 + 4 + 4 * bsize + 8 * bsize;
-		directory.writeLong(firstBucketAddr);
-		directory.writeLong(secondBucketAddr);
+		writeBucket(buckets.length(), bucket);
+		writeBucket(buckets.length(), bucket);
 
 	}
 
@@ -183,21 +178,34 @@ public class ExtHash {
 		return nKeys;
 	}
 
-	public boolean doubleAll(int key) throws IOException {
-		int nKeys = 0;
+	public void doubleAll() throws IOException {
+		// int nKeys = 0;
 		int length = 0;
+		int loopNum = 0;
 		length = calcBucketEachLength();
-		nKeys = findnKeys(key);
-		if (nKeys == this.bucketSize) {
-			this.directoryBIts++;
-			directory.seek(0);
-			directory.writeInt(this.directoryBIts);
-			for (int i = 0; i < (Math.pow(2, this.directoryBIts)); i++) {
-				directory.writeLong(length * i + 4);
-			}
-			return true;
+		// nKeys = findnKeys(key);
+		// if (nKeys == this.bucketSize) {
+		// double dir
+		this.directoryBIts++;
+		directory.seek(0);
+		directory.writeInt(this.directoryBIts);
+		for (int i = 0; i < (Math.pow(2, this.directoryBIts)); i++) {
+			directory.writeLong(length * i + 4);
 		}
-		return false;
+		// double bucket
+		Bucket bucket = new Bucket();
+		bucket.setBucketBits(1);
+		bucket.setCount(0);
+		bucket.setKeys(new int[this.bucketSize]);
+		bucket.setRowAddrs(new long[this.bucketSize]);
+		loopNum = (int) calcLoop(1);
+		for (int i = 0; i < loopNum; i++) {
+			writeBucket(buckets.length(), bucket);
+		}
+
+		// return true;
+		// }
+		// return false;
 	}
 
 	public void deDoubleAll() throws IOException {
@@ -214,6 +222,9 @@ public class ExtHash {
 		 */
 		long keyAddr = 0;
 		long nk = 0;
+		long[] emptyAddr = new long[bucketSize];
+		int[] emptyKeys = new int[bucketSize];
+		
 		keyAddr = searchBucketAddrInDir(key);
 		buckets.seek(keyAddr);
 		Bucket bucket = readBucket(keyAddr);
@@ -226,13 +237,35 @@ public class ExtHash {
 			}
 			keys[(int) nk] = key;
 			for (int i = 0; i < nk; i++) {
-				tableAddrs[i]=bucket.getRowAddrs()[i];
+				tableAddrs[i] = bucket.getRowAddrs()[i];
 			}
-			tableAddrs[(int) nk]=addr;
+			tableAddrs[(int) nk] = addr;
 			bucket.setKeys(keys);
 			bucket.setRowAddrs(tableAddrs);
-			bucket.setCount((int) nk+1);
+			bucket.setCount((int) nk + 1);
 			writeBucket(keyAddr, bucket);
+		} else if (bucket.getBucketBits() < this.directoryBIts) {
+			
+		} else {
+			doubleAll();
+			Bucket emptyBucket = new Bucket();
+			emptyBucket.setBucketBits(directoryBIts);
+			emptyBucket.setCount(0);
+			emptyBucket.setKeys(emptyKeys);
+			emptyBucket.setRowAddrs(emptyAddr);
+			writeBucket(keyAddr, emptyBucket);
+			int oldKey = 0;
+			long oldAddr = 0;				
+			for(int i=0; i<bucket.getCount(); i++){
+				oldKey = bucket.getKeys()[i];
+				oldAddr = bucket.getRowAddrs()[i];
+				insert(oldKey, oldAddr);
+			}
+			
+			long newKeyAddr=searchBucketAddrInDir(key);
+			insert(key, addr);	
+			buckets.seek(newKeyAddr);
+			buckets.writeInt(this.directoryBIts);
 		}
 
 		return true;
@@ -259,15 +292,17 @@ public class ExtHash {
 		long bucketAddr = 0;
 		int[] keyInFile;
 		long[] keyAddr;
-		int keyNum = 0;
+		// int keyNum = 0;
 		boolean flag = false;
 		int record = 0;
 		// loopNum=calcLoop(1);
 		// for(int i=0;i<loopNum;i++){
 		bucketAddr = searchBucketAddrInDir(k);
+		System.out.println("The key should insert into " + bucketAddr);
 		buckets.seek(bucketAddr);
 		buckets.readInt();
-		keyNum = buckets.readInt();
+		// keyNum = buckets.readInt();
+		buckets.readInt();
 		keyInFile = new int[this.bucketSize];
 		keyAddr = new long[this.bucketSize];
 		for (int j = 0; j < this.bucketSize; j++) {
@@ -354,14 +389,14 @@ public class ExtHash {
 			nk = buckets.readInt();
 			System.out.print(nb + "\t");
 			System.out.print(nk + "\t");
-			k = new int[nk];
-			a = new long[nk];
-			for (int j = 0; j < nk; j++) {
+			k = new int[this.bucketSize];
+			a = new long[this.bucketSize];
+			for (int j = 0; j < this.bucketSize; j++) {
 				k[j] = buckets.readInt();
 				System.out.print(k[j] + " ");
 			}
 			System.out.print("\t");
-			for (int j = 0; j < nk; j++) {
+			for (int j = 0; j < this.bucketSize; j++) {
 				a[j] = buckets.readLong();
 				System.out.print(a[j] + " ");
 			}
