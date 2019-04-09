@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import javax.print.attribute.HashAttributeSet;
+
 public class DriveTest {
 
 	public static void main(String[] args) throws IOException {
@@ -63,8 +65,7 @@ public class DriveTest {
 		
 		//extHash.bucketDisplay();
 		//System.out.println(extHash.search(10));
-		System.out.println(1<<2);
-		System.out.println(10 % (1 << 2));
+		//System.out.println(hash(110));
 	}
 	public static void insertTest(int nBits, int nKeys, int[] keys,long[] addr) throws IOException{
 		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_01_buckets", "rw");
@@ -78,5 +79,20 @@ public class DriveTest {
 			raf.writeLong(addr[i]);
 		}
 	}
-
+	public static int hash(int key) {
+		// return the hash value
+		int hashValue = 0;
+		int sum =0;
+		String result = "";
+		for (int i = key; i >= 1; i = i / 2) {
+			if (i % 2 == 0) {
+				sum = 0;
+			} else {
+				sum = 1;
+			}
+			result = sum + result;
+		}
+		hashValue = Integer.parseInt(result);
+		return hashValue;
+	}
 }

@@ -200,8 +200,20 @@ public class ExtHash {
 	}
 
 	public int hash(int key) {
-		int hashValue = 0;
 		// return the hash value
+		int hashValue = 0;
+//		int sum =0;
+//		String result = "";
+//		for (int i = key; i >= 1; i = i / 2) {
+//			if (i % 2 == 0) {
+//				sum = 0;
+//			} else {
+//				sum = 1;
+//			}
+//			result = sum + result;
+//		}
+//		hashValue = Integer.parseInt(result);
+		hashValue =  key % (1 << this.directoryBIts);
 		return hashValue;
 	}
 
