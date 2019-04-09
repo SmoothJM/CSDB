@@ -136,16 +136,16 @@ public class DBTable {
 		 */
 		
 		long lastFreeAddr = 0;
-		long oldLength = 0;
+		long oldFileLength = 0;
 		long keyAddr=0;
 		Row newRow = new Row(key, fields);
 		lastFreeAddr = getFree(this.free);
-		oldLength = rows.length();
+		oldFileLength = rows.length();
 		keyAddr =extHash.search(key);
 		if(keyAddr==0){
 			newRow.writeRow(lastFreeAddr);
 			extHash.insert(key, lastFreeAddr);
-			if (lastFreeAddr != oldLength) {
+			if (lastFreeAddr != oldFileLength) {
 				changeFree(findKeyAddr(lastFreeAddr));
 			}
 			return true;

@@ -21,7 +21,7 @@ public class DriveTest {
 //		char[][] fl8 ={{'G','e','o','r','g','e'},{'E','l','i','o','t'}};
 		char[][] fl9 ={{'J','i','a','n','m','u'},{'D','e','n','g'}};
 		//DBTable dbR = new DBTable("src/h2/allFiles/DBTable_02",fl,5);
-		//DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
+		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
 		//DBTable dbR = new DBTable("src/h2/allFiles/DBTable_02 - Copy");
 		//RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_02 - Copy", "r");
 		//dbR.insert(50, fl2);
@@ -36,20 +36,21 @@ public class DriveTest {
 		//dbR.insert(30, fl8);
 		//dbR.insert(999, fl9);
 		//dbR.remove(30);
-		//dbR.tableRead();
+		dbR.tableRead();
 		//System.out.println(dbR.search(999));
-		//System.out.println(dbR.search(10));
+		System.out.println(dbR.search(10));
 //		System.out.println(dbR.findKey(60));
 //		System.out.println(dbR.findKey(190));
 		//Sys/m.out.println(raf.length());
 		//System.out.println(dbR.getFree(0));
 		//System.out.println(dbR.findKeyAddr(0));
 		//System.out.println(dbR.findKeyAddr(999));
-		//dbR.close();
+		dbR.close();
 		
 		//ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01",2);
 //		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01");
 //		extHash.dirDisplay();
+//		System.out.println("-------------");
 //		extHash.bucketDisplay();
 //		int[] k1 = {60,10};
 //		int[] k2 = {40,50};
@@ -62,10 +63,11 @@ public class DriveTest {
 //		insertTest(2,2,k2,a2);
 //		insertTest(2,2,k3,a3);
 //		insertTest(2,2,k4,a4);
-		
 		//extHash.bucketDisplay();
 		//System.out.println(extHash.search(10));
-		//System.out.println(hash(110));
+		//int h = hash(6);
+		//System.out.println(h);
+		//insertDir();
 	}
 	public static void insertTest(int nBits, int nKeys, int[] keys,long[] addr) throws IOException{
 		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_01_buckets", "rw");
@@ -80,6 +82,8 @@ public class DriveTest {
 		}
 	}
 	public static int hash(int key) {
+
+		
 		// return the hash value
 		int hashValue = 0;
 		int sum =0;
@@ -92,7 +96,18 @@ public class DriveTest {
 			}
 			result = sum + result;
 		}
-		hashValue = Integer.parseInt(result);
+		result = result.substring(result.length()-3, result.length());
+		hashValue = Integer.parseInt(result,2);
 		return hashValue;
+	}
+	
+	public static void insertDir() throws IOException{
+		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_01_dir", "rw");
+		raf.seek(raf.length());
+		raf.writeLong(4);
+		raf.writeLong(36);
+		raf.writeLong(68);
+		raf.writeLong(100);
+		raf.close();
 	}
 }
