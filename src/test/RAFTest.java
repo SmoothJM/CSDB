@@ -138,7 +138,9 @@ public class RAFTest {
 	}
 	@Test
 	public void h2Test() throws IOException {
-		RandomAccessFile raf = new RandomAccessFile("src/f1", "rw");
+		RandomAccessFile raf = new RandomAccessFile("src/f1", "r");
+//		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_01", "rw");
+//		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/01", "rw");
 		raf.seek(0);
 		int i = 0;
 		i=raf.readInt();

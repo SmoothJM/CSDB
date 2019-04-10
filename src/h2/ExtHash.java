@@ -166,8 +166,8 @@ public class ExtHash {
 		directory = new RandomAccessFile(filename + "_dir", "rw");
 		buckets.seek(0);
 		directory.seek(0);
-//		this.bucketSize = buckets.readInt();
-//		this.directoryBIts = directory.readInt();
+		this.bucketSize = buckets.readInt();
+		this.directoryBIts = directory.readInt();
 	}
 
 	public int findnKeys(int key) throws IOException {
@@ -310,37 +310,36 @@ public class ExtHash {
 		 * If the key is found return the address of the row with the key
 		 * otherwise return 0
 		 */
-		// long loopNum=0;
-		long bucketAddr = 0;
+		long loopNum=0;
+		long bucketBeginAddr = 4;
 		int[] keyInFile;
 		long[] keyAddr;
-		// int keyNum = 0;
+//		int keyNum = 0;
 		boolean flag = false;
 		int record = 0;
-		// loopNum=calcLoop(1);
-		// for(int i=0;i<loopNum;i++){
-		bucketAddr = searchBucketAddrInDir(k);
-//		System.out.println("The key should insert into " + bucketAddr);
-		buckets.seek(bucketAddr);
-		buckets.readInt();
-		// keyNum = buckets.readInt();
-		buckets.readInt();
-		keyInFile = new int[this.bucketSize];
-		keyAddr = new long[this.bucketSize];
-		for (int j = 0; j < this.bucketSize; j++) {
-			keyInFile[j] = buckets.readInt();
-			if (k == keyInFile[j]) {
-				flag = true;
-				record = j;
+		loopNum=calcLoop(1);
+		buckets.seek(bucketBeginAddr);
+		for(int i=0;i<loopNum;i++){
+//			bucketAddr = searchBucketAddrInDir(k);
+			buckets.readInt();
+			// keyNum = buckets.readInt();
+			buckets.readInt();
+			keyInFile = new int[this.bucketSize];
+			keyAddr = new long[this.bucketSize];
+			for (int j = 0; j < this.bucketSize; j++) {
+				keyInFile[j] = buckets.readInt();
+				if (k == keyInFile[j]) {
+					flag = true;
+					record = j;
+				}
 			}
-		}
-		for (int j = 0; j < this.bucketSize; j++) {
-			keyAddr[j] = buckets.readLong();
-		}
-		if (flag) {
-			return keyAddr[record];
-		}
-		// }
+			for (int j = 0; j < this.bucketSize; j++) {
+				keyAddr[j] = buckets.readLong();
+			}
+			if (flag) {
+				return keyAddr[record];
+			}
+		 }
 		return 0;
 	}
 

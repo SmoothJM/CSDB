@@ -398,13 +398,4 @@ public class DBTable {
 		// close the DBTable. The table should not be used after it is closed
 		rows.close();
 	}
-	// public long test(long addr) throws IOException{
-	// long key=0;
-	// rows.seek(addr);
-	// if(addr==12){
-	// key=rows.readLong();
-	// }
-	// key=rows.readInt();
-	// return key;
-	// }
 }

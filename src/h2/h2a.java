@@ -45,7 +45,7 @@ public class h2a {
 	public h2a() throws IOException {
 		int limit;
 
-		t1 = new DBTable("f1", t1Fields, 2);
+		t1 = new DBTable("src/f1", t1Fields, 2);
 
 
 		//Insert data into t1
@@ -59,7 +59,7 @@ public class h2a {
 
 //		t1.remove(2);
 //		t1.remove(22);
-//
+//h
 //		search(2);
 //		search(4);
 //		search(22);

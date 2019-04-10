@@ -10,16 +10,16 @@ public class DriveTest {
 
 	public static void main(String[] args) throws IOException {
 		//ExtHash e1 = new ExtHash("allFiles/Directory_01");
-//		int[] fl ={10,20};
-//		char[][] fl2 ={{'A','n','t','o','n'},{'C','h','e','k','h','o','v'}};
-//		char[][] fl3 ={{'V','l','a','d','i','m','i','r'},{'N','a','b','o','k','o','v'}};
-//		char[][] fl4 ={{'A','l','o','n','z','o'},{'C','h','u','r','c','h'}};
-//		char[][] fl1 = {{},{}};
-//		char[][] fl6 ={{'M','a','r','k'},{'T','w','a','i','n'}};
-//		char[][] fl5 ={{'G','o','t','t','t','l','o','b'},{'F','r','e','g','e'}};
-//		char[][] fl7 ={{'H','a','n','n','a','h'},{'A','r','e','n','d','t'}};
-//		char[][] fl8 ={{'G','e','o','r','g','e'},{'E','l','i','o','t'}};
-//		char[][] fl9 ={{'J','i','a','n','m','u'},{'D','e','n','g'}};
+		int[] fl ={10,20};
+		char[][] fl2 ={{'A','n','t','o','n'},{'C','h','e','k','h','o','v'}};
+		char[][] fl3 ={{'V','l','a','d','i','m','i','r'},{'N','a','b','o','k','o','v'}};
+		char[][] fl4 ={{'A','l','o','n','z','o'},{'C','h','u','r','c','h'}};
+		char[][] fl1 = {{},{}};
+		char[][] fl6 ={{'M','a','r','k'},{'T','w','a','i','n'}};
+		char[][] fl5 ={{'G','o','t','t','t','l','o','b'},{'F','r','e','g','e'}};
+		char[][] fl7 ={{'H','a','n','n','a','h'},{'A','r','e','n','d','t'}};
+		char[][] fl8 ={{'G','e','o','r','g','e'},{'E','l','i','o','t'}};
+		char[][] fl9 ={{'J','i','a','n','m','u'},{'D','e','n','g'}};
 //		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01",fl,2);
 //		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
 		DBTable dbR = new DBTable("src/f1");
@@ -33,7 +33,7 @@ public class DriveTest {
 		
 		//dbR.remove(30);
 //		dbR.tableRead();
-//		System.out.println("------------");
+		System.out.println("------------");
 //		System.out.println(dbR.search(999));
 //		System.out.println(dbR.search(10));
 //		System.out.println(dbR.findKey(60));
@@ -46,8 +46,9 @@ public class DriveTest {
 		
 //		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01",2);
 //		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01");
+//		ExtHash extHash = new ExtHash("src/f1");
 //		extHash.dirDisplay();
-//		System.out.println("-------------");
+		System.out.println("-------------");
 //		extHash.bucketDisplay();
 //		int[] k1 = {60,10};
 //		int[] k2 = {40,50};
@@ -65,6 +66,9 @@ public class DriveTest {
 //		int h = hash(10);
 //		System.out.println(h);
 		//insertDir();
+		for (int i = 0; i < 24; i++) {
+			dbR.search(i);
+		}
 	}
 	public static void insertTest(int nBits, int nKeys, int[] keys,long[] addr) throws IOException{
 		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_01_buckets", "rw");
