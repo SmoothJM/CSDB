@@ -136,4 +136,12 @@ public class RAFTest {
 	public void closeTest() throws IOException {
 		RandomAccessFile raf = new RandomAccessFile("c:/Users/14534/Desktop/data2.txt", "rw");
 	}
+	@Test
+	public void h2Test() throws IOException {
+		RandomAccessFile raf = new RandomAccessFile("src/f1", "rw");
+		raf.seek(0);
+		int i = 0;
+		i=raf.readInt();
+		raf.close();
+	}
 }
