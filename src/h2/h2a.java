@@ -45,44 +45,45 @@ public class h2a {
 	public h2a() throws IOException {
 		int limit;
 
-//		t1 = new DBTable("src/f1", t1Fields, 2);
+		t1 = new DBTable("f1", t1Fields, 2);
+////
+////
+////		//Insert data into t1
+		insert_t1("faculty2.txt");
+
+		for (int i = 0; i < 24; i++) {
+			search(i);
+		}
 //
-//
-//		//Insert data into t1
-//		insert_t1("src/faculty2.txt");
-//
-//		for (int i = 0; i < 24; i++) {
-//			search(i);
-//		}
-//
-//		//remove rows 2 and 22
-//
-//		t1.remove(2);
-//		t1.remove(22);
-//
-//		search(2);
-//		search(4);
-//		search(22);
-//
-//		t1.close();
+////		//remove rows 2 and 22
+////
+		t1 = new DBTable("f1");
+		t1.remove(2);
+		t1.remove(22);
+
+		search(2);
+		search(4);
+		search(22);
+
+		t1.close();
 
 		t1 = new DBTable("f1");
-		//Reuse table and insert more data into t1
-//		insert_t1("faculty1.txt");
-//
-//		for (int i = 0; i < 24; i++) {
-//			search(i);
-//		}
+//		//Reuse table and insert more data into t1
+		insert_t1("faculty1.txt");
 
-		//remove all the odd rows
-//		for (int i = 1; i < 24; i = i+2) {
-//			t1.remove(i);
-//		}
+		for (int i = 0; i < 24; i++) {
+			search(i);
+		}
 //
-//		System.out.println("search for rows after removes");
-//		for (int i = 0; i < 24; i++) {
-//			search(i);
-//		}
+//		//remove all the odd rows
+		for (int i = 1; i < 24; i = i+2) {
+			t1.remove(i);
+		}
+//
+		System.out.println("search for rows after removes");
+		for (int i = 0; i < 24; i++) {
+			search(i);
+		}
 
 		t1.close();
 	}

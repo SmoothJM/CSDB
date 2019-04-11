@@ -206,6 +206,7 @@ public class ExtHash {
 		length = ((directory.length() - 4) / 2) + 4;
 		directory.setLength(length);
 		//TODO deDouble bucket.
+		
 	}
 
 	public boolean insert(int key, long addr) throws IOException {

@@ -11,6 +11,7 @@ public class DBTable {
 	long free; // head of the free list space for rows
 	int numOtherFields;
 	int otherFieldLengths[];
+	long preAddr=0;
 	ExtHash extHash;
 	// add other instance variables as needed
 
@@ -140,14 +141,15 @@ public class DBTable {
 		long keyAddr=0;
 		long fkaddr=0;
 		Row newRow = new Row(key, fields);
-		lastFreeAddr = getFree(this.free);
+		lastFreeAddr = getFree(this.free,0);
 		oldFileLength = rows.length();
 		keyAddr = extHash.search(key);
 		if(keyAddr==0){
-			newRow.writeRow(lastFreeAddr);//404
+			newRow.writeRow(lastFreeAddr);
 			extHash.insert(key, lastFreeAddr);
 			if (lastFreeAddr != oldFileLength) {
-				fkaddr = findKeyAddr(lastFreeAddr);
+//				fkaddr = findKeyAddr(lastFreeAddr);
+				fkaddr=this.preAddr;
 				if (fkaddr!=0) {
 					changeFree(fkaddr);
 				}else {
@@ -155,14 +157,12 @@ public class DBTable {
 					rows.seek(4+4*numOtherFields);
 					rows.writeLong(0);
 				}
-				
 			}
 			return true;
 		}else{
 			System.out.println("Key existed......");
 			return false;
 		}
-		
 	}
 
 	/**
@@ -173,19 +173,24 @@ public class DBTable {
 	 * @return The address of the last free slot.
 	 * @throws IOException
 	 */
-	public long getFree(long addr) throws IOException {
-		long currKey = 0;
+	public long getFree(long addr,long preAddr) throws IOException {
+		long currAddr = 0;
 		if (this.free == 0) {
 			return rows.length();
 		}
 		rows.seek(addr);
-		currKey = rows.readInt();
-		if (currKey == 0) {
+		currAddr = rows.readInt();
+		if (currAddr == 0) {
+			recordPreFreeAddr(preAddr);
 			return addr;
 		}
-		return getFree(currKey);
+		return getFree(currAddr,addr);
 	}
 
+	public void recordPreFreeAddr(long addr){
+		this.preAddr=addr;
+	}
+	
 	/**
 	 * This method is to change the address of the last free slot.
 	 * 
