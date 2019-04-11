@@ -138,15 +138,24 @@ public class DBTable {
 		long lastFreeAddr = 0;
 		long oldFileLength = 0;
 		long keyAddr=0;
+		long fkaddr=0;
 		Row newRow = new Row(key, fields);
 		lastFreeAddr = getFree(this.free);
 		oldFileLength = rows.length();
-		keyAddr =extHash.search(key);
+		keyAddr = extHash.search(key);
 		if(keyAddr==0){
-			newRow.writeRow(lastFreeAddr);
+			newRow.writeRow(lastFreeAddr);//404
 			extHash.insert(key, lastFreeAddr);
 			if (lastFreeAddr != oldFileLength) {
-				changeFree(findKeyAddr(lastFreeAddr));
+				fkaddr = findKeyAddr(lastFreeAddr);
+				if (fkaddr!=0) {
+					changeFree(fkaddr);
+				}else {
+					this.free=0;
+					rows.seek(4+4*numOtherFields);
+					rows.writeLong(0);
+				}
+				
 			}
 			return true;
 		}else{
@@ -364,7 +373,7 @@ public class DBTable {
 	}
 
 	/**
-	 * This method is to find if the exists key and return the address of the
+	 * This method is to find if the key existed and return the address of the
 	 * row with the key.
 	 * 
 	 * @param key:

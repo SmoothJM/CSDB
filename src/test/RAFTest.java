@@ -27,7 +27,7 @@ public class RAFTest {
 	public void rTest() throws Exception {
 		RandomAccessFile raf = new RandomAccessFile("c:/Users/14534/Desktop/data2.txt", "rw");
 		long loopNum = raf.length() / 38;
-		//System.out.println(raf.length() + "=" + loopNum);
+		// System.out.println(raf.length() + "=" + loopNum);
 		Integer id = 0;
 		String name = null;
 		Double height = 0.0;
@@ -63,7 +63,7 @@ public class RAFTest {
 		// 找到Doe,將其姓名改為Dongyi
 		// 1.找到doe
 		String newName = "Dongyii";
-		Person pNew = new Person(3,newName,1.83d);
+		Person pNew = new Person(3, newName, 1.83d);
 		Integer id = 0;
 		String name = null;
 		Double height = 0.0;
@@ -81,20 +81,21 @@ public class RAFTest {
 				raf.readByte();
 			}
 			height = raf.readDouble();
-			pos=raf.getFilePointer();
-			posN=pos-33;
+			pos = raf.getFilePointer();
+			posN = pos - 33;
 			if (name.equals("Doe")) {// 2.替換
-				raf.seek(38*i+8);
+				raf.seek(38 * i + 8);
 				raf.writeUTF(newName);
 				break;
 			}
 		}
 	}
+
 	@Test
 	public void delete() throws IOException {
 		RandomAccessFile raf = new RandomAccessFile("c:/Users/14534/Desktop/data2.txt", "rw");
-		String nameWanted="Nick";
-		char[] empty=new char[nameWanted.length()];
+		String nameWanted = "Nick";
+		char[] empty = new char[nameWanted.length()];
 		String str1 = new String(empty);
 		Integer id = 0;
 		String name = null;
@@ -118,32 +119,70 @@ public class RAFTest {
 			System.out.println(raf.getFilePointer());
 			System.out.println(id + "--" + name + "--" + height);
 			if (name.equals(nameWanted)) {
-				raf.seek(38*i+8);
+				raf.seek(38 * i + 8);
 				raf.writeUTF(str1);
 				break;
 			}
 		}
 	}
+
 	@Test
 	public void charToString() throws IOException {
-		String nameWanted="Nick";
-		char[] empty=new char[nameWanted.length()];
+		String nameWanted = "Nick";
+		char[] empty = new char[nameWanted.length()];
 		System.out.println(empty);
 		String str1 = new String(empty);
 		System.out.println(str1.length());
 	}
-	@Test
-	public void closeTest() throws IOException {
-		RandomAccessFile raf = new RandomAccessFile("c:/Users/14534/Desktop/data2.txt", "rw");
-	}
+
 	@Test
 	public void h2Test() throws IOException {
 		RandomAccessFile raf = new RandomAccessFile("src/f1", "r");
-//		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/DBTable_01", "rw");
-//		RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/01", "rw");
+		// RandomAccessFile raf = new
+		// RandomAccessFile("src/h2/allFiles/DBTable_01", "rw");
+		// RandomAccessFile raf = new RandomAccessFile("src/h2/allFiles/01",
+		// "rw");
 		raf.seek(0);
 		int i = 0;
-		i=raf.readInt();
+		i = raf.readInt();
 		raf.close();
+	}
+
+	@Test
+	public void sort(){
+//		int[] a1 = {1,2,0,4,5};
+//		int[] a2 = {1,2,0,4,5};
+		int bucketSize =5;
+		int record=0;
+		///////////////////////////
+//		int[] a1 = {1,2,3,4,0};
+//		int[] a2 = {1,2,3,4,0};
+		///////////////////////
+		int[] a1 = {0,2,3,4,5};
+		int[] a2 = {0,2,3,4,5};
+		int temp=0;
+		if(record==(bucketSize-1)){
+			System.out.println("no needs to sort");
+		}else{
+			for(int i=record;i<(bucketSize-1);i++){
+				if(a1[i+1]!=0){
+					temp=a1[i+1];
+					a1[i+1]=a1[i];
+					a1[i]=temp;
+					temp=a2[i+1];
+					a2[i+1]=a2[i];
+					a2[i]=temp;
+				}else{
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < bucketSize; i++) {
+			System.out.println(a1[i]+"---"+a2[i]);
+		}
+		
+		
+		
+		
 	}
 }

@@ -21,18 +21,18 @@ public class DriveTest {
 		char[][] fl8 ={{'G','e','o','r','g','e'},{'E','l','i','o','t'}};
 		char[][] fl9 ={{'J','i','a','n','m','u'},{'D','e','n','g'}};
 //		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01",fl,2);
-//		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
-		DBTable dbR = new DBTable("src/f1");
+		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
+//		DBTable dbR = new DBTable("src/f1");
 //		dbR.insert(50, fl2);
 //		dbR.insert(10, fl3);
 //		dbR.insert(61, fl4);
 //		dbR.insert(21, fl5);
 //		dbR.insert(40, fl6);
 //		dbR.insert(70, fl7);
-//		dbR.insert(31, fl8);
+		dbR.insert(31, fl8);
 		
-		//dbR.remove(30);
-//		dbR.tableRead();
+//		dbR.remove(31);
+		dbR.tableRead();
 		System.out.println("------------");
 //		System.out.println(dbR.search(999));
 //		System.out.println(dbR.search(10));
@@ -45,11 +45,11 @@ public class DriveTest {
 		//dbR.close();
 		
 //		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01",2);
-//		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01");
+		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01");
 //		ExtHash extHash = new ExtHash("src/f1");
-//		extHash.dirDisplay();
+		extHash.dirDisplay();
 		System.out.println("-------------");
-//		extHash.bucketDisplay();
+		extHash.bucketDisplay();
 //		int[] k1 = {60,10};
 //		int[] k2 = {40,50};
 //		int[] k3 = {70,30};
