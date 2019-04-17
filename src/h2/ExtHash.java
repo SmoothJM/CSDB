@@ -116,6 +116,16 @@ public class ExtHash {
 
 	}
 
+	/**
+	 * This method is used to insert a new bucket into the bucket file. The
+	 * insert(key, addr) will call this method to insert new bucket.
+	 * 
+	 * @param addr
+	 *            Bucket's address instead of the key's address
+	 * @param bucket
+	 *            the new bucket needs to insert
+	 * @throws IOException
+	 */
 	public void writeBucket(long addr, Bucket bucket) throws IOException {
 		buckets.seek(addr);
 		buckets.writeInt(bucket.getBucketBits());
@@ -128,6 +138,15 @@ public class ExtHash {
 		}
 	}
 
+	/**
+	 * This method is to obtain the whole row of bucket by the specific address
+	 * of the bucket.
+	 * 
+	 * @param addr
+	 *            Bucket's address
+	 * @return the whole bucket row which is encapsulated to be a bucket object.
+	 * @throws IOException
+	 */
 	public Bucket readBucket(long addr) throws IOException {
 		int nb = 0;
 		int nk = 0;
@@ -170,6 +189,15 @@ public class ExtHash {
 		this.directoryBIts = directory.readInt();
 	}
 
+	/**
+	 * This method is to obtain the numbers of keys in a bucket which is the
+	 * parameter "key" located.
+	 * 
+	 * @param key
+	 *            which key you want to find.
+	 * @return number of the keys in this bucket
+	 * @throws IOException
+	 */
 	public int findnKeys(int key) throws IOException {
 		int nKeys = 0;
 		long addr = searchBucketAddrInDir(key);
@@ -178,6 +206,11 @@ public class ExtHash {
 		return nKeys;
 	}
 
+	/**
+	 * This method is to double the bucket and directory.
+	 * 
+	 * @throws IOException
+	 */
 	public void doubleAll() throws IOException {
 		// int nKeys = 0;
 		int length = 0;
@@ -204,6 +237,12 @@ public class ExtHash {
 		}
 	}
 
+	/**
+	 * This method is to cut the bucket and directory to be half length of
+	 * before.
+	 * 
+	 * @throws IOException
+	 */
 	public void deDoubleAll() throws IOException {
 		long lengthOfDir = 0;
 		long lengthOfBuc = 0;
@@ -339,6 +378,12 @@ public class ExtHash {
 		return addr;
 	}
 
+	/**
+	 * This method is to judge whether the bucket and directory can be cut.
+	 * 
+	 * @return ture means can cut; false means cannot cut.
+	 * @throws IOException
+	 */
 	public boolean canDeDouble() throws IOException {
 		int rowNumInBucket = 0;
 		boolean flag = true;
@@ -418,13 +463,24 @@ public class ExtHash {
 			result = sum + result;
 		}
 		// result = String.format("%020s", result);
-		result = "000000000000000000" + result;
+		result = "000000000000000000" + result;// avoid the length of result is
+												// less than bits
 		result = result.substring(result.length() - this.directoryBIts, result.length());
 		hashValue = Integer.parseInt(result, 2);
 		// hashValue = key % (1 << this.directoryBIts);
 		return hashValue;
 	}
 
+	/**
+	 * This is a extra and inefficient method. It is to find the address in
+	 * bucket of a key. Actually I need to use hash() and directory file to find
+	 * the key's address in bucket.
+	 * 
+	 * @param k
+	 *            which key you want to find
+	 * @return the address of the key
+	 * @throws IOException
+	 */
 	public long searchBucketAddrInBucket(int k) throws IOException {
 		long addr = 0;
 		long loopNum = 0;
@@ -456,6 +512,18 @@ public class ExtHash {
 		return 0;
 	}
 
+	/**
+	 * This method is to find the key's locate in the bucket. For example, the
+	 * first key in the bucket, then the record is 0; the second key in the
+	 * bucket, then the record is 1.
+	 * 
+	 * @param k
+	 *            which key you want to query.
+	 * @param addr
+	 *            address of the key in DBTable.
+	 * @return the position of the key in the bucket
+	 * @throws IOException
+	 */
 	public long searchRecord(int k, long addr) throws IOException {
 		long loopNum = 0;
 		int[] keyInFile;
@@ -486,6 +554,15 @@ public class ExtHash {
 		return 0;
 	}
 
+	/**
+	 * This method uses hash() to find the right address of a key in bucket from
+	 * directory file.
+	 * 
+	 * @param key
+	 *            which key you want to find
+	 * @return the address of the key.
+	 * @throws IOException
+	 */
 	public long searchBucketAddrInDir(int key) throws IOException {
 		long bucketAddr = 0;
 		int hashValue = 0;
@@ -497,12 +574,27 @@ public class ExtHash {
 		return bucketAddr;
 	}
 
+	/**
+	 * This method is to calculate the length of a bucket.(length of a row in
+	 * bucket)
+	 * 
+	 * @return length of a row in bucket
+	 */
 	public int calcBucketEachLength() {
 		int length = 0;
 		length = 4 + 4 + 4 * this.bucketSize + 8 * this.bucketSize;
 		return length;
 	}
 
+	/**
+	 * This method is to calculate how many rows in the bucket file and
+	 * directory file.
+	 * 
+	 * @param i
+	 *            1 means buckets file, other number means directory file.
+	 * @return row number of file.
+	 * @throws IOException
+	 */
 	public long calcLoop(int i) throws IOException {
 		long loopNum = 0;
 		long fileLength = 0;
@@ -518,6 +610,11 @@ public class ExtHash {
 		return loopNum;
 	}
 
+	/**
+	 * This method is to display the bucket to the Console.
+	 * 
+	 * @throws IOException
+	 */
 	public void bucketDisplay() throws IOException {
 		int bS = 0;
 		long loopNum = calcLoop(1);
@@ -549,6 +646,11 @@ public class ExtHash {
 		}
 	}
 
+	/**
+	 * This method is to display the directory file to the Console.
+	 * 
+	 * @throws IOException
+	 */
 	public void dirDisplay() throws IOException {
 		int hB = 0;
 		long loopNum = 0;

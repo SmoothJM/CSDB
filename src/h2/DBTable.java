@@ -160,7 +160,7 @@ public class DBTable {
 			}
 			return true;
 		} else {
-			//System.out.println("Key existed......");
+			// System.out.println("Key existed......");
 			return false;
 		}
 	}
@@ -233,7 +233,7 @@ public class DBTable {
 		long addrNewFree = 0;
 		addrDelete = extHash.search(key);
 		if (addrDelete == 0) {
-			//System.out.println("Key is not existed......");
+			// System.out.println("Key is not existed......");
 			return false;
 		} else {
 			// addrDelete = findKeyAddr(key);
