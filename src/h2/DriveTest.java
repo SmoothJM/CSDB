@@ -1,29 +1,27 @@
 package h2;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import javax.print.attribute.HashAttributeSet;
 
 public class DriveTest {
 
 	public static void main(String[] args) throws IOException {
 		//ExtHash e1 = new ExtHash("allFiles/Directory_01");
 		int[] fl ={10,20};
+		char[][] fl1 = {{},{}};
 		char[][] fl2 ={{'A','n','t','o','n'},{'C','h','e','k','h','o','v'}};
 		char[][] fl3 ={{'V','l','a','d','i','m','i','r'},{'N','a','b','o','k','o','v'}};
 		char[][] fl4 ={{'A','l','o','n','z','o'},{'C','h','u','r','c','h'}};
-		char[][] fl1 = {{},{}};
 		char[][] fl6 ={{'M','a','r','k'},{'T','w','a','i','n'}};
 		char[][] fl5 ={{'G','o','t','t','t','l','o','b'},{'F','r','e','g','e'}};
 		char[][] fl7 ={{'H','a','n','n','a','h'},{'A','r','e','n','d','t'}};
 		char[][] fl8 ={{'G','e','o','r','g','e'},{'E','l','i','o','t'}};
 		char[][] fl9 ={{'J','i','a','n','m','u'},{'D','e','n','g'}};
 //		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01",fl,2);
-//		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
-		DBTable dbR = new DBTable("f1");
-//		dbR.insert(50, fl2);
+		DBTable dbR = new DBTable("src/h2/allFiles/DBTable_01");
+//		DBTable dbR = new DBTable("f1");
+//		dbR.insert(0, fl2);
 //		dbR.insert(10, fl3);
 //		dbR.insert(61, fl4);
 //		dbR.insert(21, fl5);
@@ -34,7 +32,7 @@ public class DriveTest {
 //		dbR.remove(31);
 		dbR.tableRead();
 		System.out.println("------------");
-//		System.out.println(dbR.search(999));
+		System.out.println(dbR.search(0));
 //		System.out.println(dbR.search(10));
 //		System.out.println(dbR.findKey(60));
 //		System.out.println(dbR.findKey(190));
@@ -45,8 +43,8 @@ public class DriveTest {
 		//dbR.close();
 		
 //		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01",2);
-//		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01");
-		ExtHash extHash = new ExtHash("f1");
+		ExtHash extHash = new ExtHash("src/h2/allFiles/DBTable_01");
+//		ExtHash extHash = new ExtHash("f1");
 		extHash.dirDisplay();
 		System.out.println("-------------");
 		extHash.bucketDisplay();

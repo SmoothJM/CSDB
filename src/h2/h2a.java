@@ -46,17 +46,16 @@ public class h2a {
 		int limit;
 
 		t1 = new DBTable("f1", t1Fields, 2);
-////
-////
-////		//Insert data into t1
+
+		//Insert data into t1
 		insert_t1("faculty2.txt");
 
 		for (int i = 0; i < 24; i++) {
 			search(i);
 		}
-//
-////		//remove rows 2 and 22
-////
+
+		//remove rows 2 and 22
+
 		t1 = new DBTable("f1");
 		t1.remove(2);
 		t1.remove(22);
@@ -68,18 +67,18 @@ public class h2a {
 		t1.close();
 
 		t1 = new DBTable("f1");
-//		//Reuse table and insert more data into t1
+		//Reuse table and insert more data into t1
 		insert_t1("faculty1.txt");
 
 		for (int i = 0; i < 24; i++) {
 			search(i);
 		}
-//
+
 //		//remove all the odd rows
 		for (int i = 1; i < 24; i = i+2) {
 			t1.remove(i);
 		}
-//
+
 		System.out.println("search for rows after removes");
 		for (int i = 0; i < 24; i++) {
 			search(i);
@@ -92,13 +91,5 @@ public class h2a {
 
 	public static void main(String args[])  throws IOException  {
 		new h2a();
-//		DBTable dbR = new DBTable("src/f1");
-////		ExtHash extHash = new ExtHash("src/f1");
-//		dbR.tableRead();
-//		dbR.close();
-////		System.out.println("------------");
-////		extHash.dirDisplay();
-////		System.out.println("-------------");
-////		extHash.bucketDisplay();
 	}
 }
